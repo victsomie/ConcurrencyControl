@@ -1,5 +1,6 @@
 package com.example.mmc.concurrencycontrol;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,13 +8,22 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.webkit.WebView;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+    WebView webview;
+    TextView txtMsg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Webview of some online content
+        txtMsg = (TextView) findViewById(R.id.txtMsg);
+        demo1TrySpecificUrl();
+        //webview = (WebView)findViewById(R.id.webView1);
 
         //There are two ways of creating and executing a java thread
         // (Style1) Create a common Thread, pass a custom Runnable.
@@ -95,5 +105,19 @@ public class MainActivity extends AppCompatActivity {
             startActivity(gotToAsyncTaskActivity);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @SuppressLint("SetJavaScriptEnabled")
+    private void demo1TrySpecificUrl() {
+        webview = (WebView) findViewById(R.id.webView1);
+        webview.getSettings().setJavaScriptEnabled(true);
+        //webview.setWebViewClient(new WebViewClient()); //try later
+        // set ebay.com as "home server" - go do some shopping
+        webview.setWebViewClient(new MyWebViewClient(txtMsg, "ebay.com"));
+        //webview.setWebViewClient(new MyWebViewClient(txtMsg, "google.com"));
+        webview.loadUrl("https://victsomie.github.io/");
+        //webview.loadUrl("www.google.com");
+        //webview.loadUrl("http://www.amazon.com"); //try later
     }
 } //MainActivity
